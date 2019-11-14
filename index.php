@@ -47,9 +47,16 @@ if (!empty($key)) {
         <div class="mdui-col-xs-12 mdui-col-sm-6 mdui-col-offset-sm-3 mdui-m-b-2">
             <div class="mdui-textfield mdui-textfield-floating-label">
                 <label class="mdui-textfield-label">文章关键词</label>
-                <input id="keyword" class="mdui-textfield-input" type="text" value="MT管理器"/>
+                <input id="keyword" class="mdui-textfield-input" type="text" value="写代码会掉头发"/>
             </div>
-            <button id="generate" class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="margin-top: 5px;">生成文章</button>
+            <div class="mdui-row-xs-2">
+            	<div class="mdui-col" style="padding-left: 0;">
+		            <button id="generate" class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="margin-top: 5px;">生成文章</button>
+        		</div>
+        		<div class="mdui-col" style="padding-right: 0;">
+		            <button id="generate_page" class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="margin-top: 5px;">生成单页</button>
+    			</div>
+        	</div>
             <div id="article_content" style="padding-top: 5px;">
 
             </div>
@@ -65,13 +72,14 @@ if (!empty($key)) {
 </div>
 <script src="//cdn.bootcss.com/js-cookie/latest/js.cookie.min.js"></script>
 <script src="//cdn.bootcss.com/mdui/0.4.3/js/mdui.min.js"></script>
+<script src="base64.min.js"></script>
 <script>
     $$ = mdui.JQ;
-    var keyword = Cookies.get('keyword');
-    if (keyword != undefined && keyword.length > 0) {
-    	$$("#keyword").val(keyword);
-    }
     $$(function () {
+	    var keyword = Cookies.get('keyword');
+	    if (keyword != undefined && keyword.length > 0) {
+	    	$$("#keyword").val(keyword);
+	    }
         $$('#generate').on('click', function () {
         	keyword = $$("#keyword").val();
         	if (keyword.length == 0) {
@@ -97,8 +105,16 @@ if (!empty($key)) {
                 }
             });
         });
+        $$('#generate_page').on('click', function () {
+        	keyword = $$("#keyword").val();
+        	if (keyword.length == 0) {
+	        	return;
+        	}
+        	Cookies.set('keyword', keyword)
+        	keyword = BASE64.urlsafe_encode(keyword);
+        	window.location.href="page.php?" + keyword;
+        });
     });
 </script>
 </body>
-
 </html>
