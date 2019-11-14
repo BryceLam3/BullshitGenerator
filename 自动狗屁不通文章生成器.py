@@ -4,6 +4,7 @@ import random, json
 
 文章长度限制 = 6000
 段落长度范围 = [100, 300]
+名人名言距离限制 = 3
 重复度 = 1
 
 with open("data.json", mode='r', encoding="utf-8") as file:
@@ -21,9 +22,10 @@ def 洗牌遍历(列表):
         random.shuffle(池)
         for 元素 in 池:
             yield 元素
-            
+
 下一句废话 = 洗牌遍历(废话)
 下一句名人名言 = 洗牌遍历(名人名言)
+距离上一句名人名言 = 名人名言距离限制
 
 def 来点名人名言():
     global 下一句名人名言
@@ -40,25 +42,33 @@ if len(sys.argv) <= 1:
     exit(1);
 
 tmp = "<p>"
+first = 1
 段落长度 = 0
+
 while len(tmp) < 文章长度限制 or 段落长度 < 段落长度范围[0] or not tmp.endswith("。"):
-    if 段落长度 > 段落长度范围[1]: #防止段落过长
+    if first == 1: #文章以名人名言开头
+        first = 0
+        分支 = 5
+    elif 段落长度 > 段落长度范围[1]: #防止段落过长
         分支 = 0
     elif 段落长度 < 段落长度范围[0]: #防止段落过短
-        分支 = random.randint(5,100)
+        分支 = random.randint(5, 100)
     else:
-        分支 = random.randint(0,100)
+        分支 = random.randint(0, 100)
     if 分支 < 5 and tmp.endswith("。"):
         tmp += 另起一段()
         段落长度 = 0
-    elif 分支 < 20:
+        距离上一句名人名言 = 名人名言距离限制
+    elif 分支 < 20 and 距离上一句名人名言 >= 名人名言距离限制:
         content = 来点名人名言()
         tmp += content
         段落长度 += len(content)
+        距离上一句名人名言 = 0
     else:
         content = next(下一句废话)
         tmp += content
         段落长度 += len(content)
+        距离上一句名人名言 += 1
 tmp += "\n</p>"
 tmp = tmp.replace("x",sys.argv[1])
 print(tmp)
