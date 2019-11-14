@@ -100,5 +100,4 @@ if (!empty($key)) {
     });
 </script>
 </body>
-
 </html>
