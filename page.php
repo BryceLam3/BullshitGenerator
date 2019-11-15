@@ -42,7 +42,7 @@ $key = htmlspecialchars(base64_decode($key));
 if (!empty($key)) {
 	putenv('LANG=en_US.UTF-8');
 	$key = escapeshellarg($key);
-	$cmd = escapeshellcmd("python3 自动狗屁不通文章生成器.py $key 2>&1");
+	$cmd = "python3 自动狗屁不通文章生成器.py $key 2>&1";
 	// 如果没有任何输出那应该是php的system函数被禁用了
 	system($cmd);
 	exit(0);
