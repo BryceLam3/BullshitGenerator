@@ -3,7 +3,7 @@
 $key = $_SERVER['QUERY_STRING'];
 $key = str_replace("-", "+", $key);
 $key = str_replace("_", "/", $key);
-$key = base64_decode($key);
+$key = htmlspecialchars(base64_decode($key));
 ?>
 <html lang="zh">
 <head>
@@ -24,9 +24,9 @@ $key = base64_decode($key);
         p {
             margin-top: 12px;
             margin-bottom: 12px;
-            line-height: 200%;
-            font-size: 16px;
-            text-indent:32px;
+            line-height: 190%;
+            font-size: 17px;
+            text-indent:34px;
         }
     </style>
 </head>
@@ -41,8 +41,10 @@ $key = base64_decode($key);
 <?php
 if (!empty($key)) {
 	putenv('LANG=en_US.UTF-8');
+	$key = escapeshellarg($key);
+	$cmd = escapeshellcmd("python3 自动狗屁不通文章生成器.py $key 2>&1");
 	// 如果没有任何输出那应该是php的system函数被禁用了
-	system("python3 自动狗屁不通文章生成器.py $key 2>&1");
+	system($cmd);
 	exit(0);
 }
 ?>

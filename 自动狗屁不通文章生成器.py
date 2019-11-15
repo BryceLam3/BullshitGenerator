@@ -2,9 +2,9 @@
 import os, re, sys
 import random, json
 
-文章长度限制 = 6000
-段落长度范围 = [100, 300]
-名人名言距离限制 = 3
+文章长度限制 = 16000
+段落长度范围 = [100, 250]
+名人名言距离限制 = 5
 重复度 = 1
 
 with open("data.json", mode='r', encoding="utf-8") as file:
@@ -22,7 +22,7 @@ def 洗牌遍历(列表):
         random.shuffle(池)
         for 元素 in 池:
             yield 元素
-
+            
 下一句废话 = 洗牌遍历(废话)
 下一句名人名言 = 洗牌遍历(名人名言)
 距离上一句名人名言 = 名人名言距离限制
@@ -39,7 +39,7 @@ def 另起一段():
     return xx
 
 if len(sys.argv) <= 1:
-    exit(1);
+    exit(1)
 
 tmp = "<p>"
 first = 1
